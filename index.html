@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.2.2/css/buttons.bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.1.2/css/fixedHeader.dataTables.min.css">
+    <link rel="stylesheet" href="./css/main.css">
+    <title>Document</title>
+</head>
+<body>
+    <header>
+        <div class="label-counter" id="page-top">Nigeria COVID-19 Coronavirus Statistics</div>
+    </header>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm col-md-4 col-xd-8">
+                <div class="card mx-auto shadow p-3 mb-5 bg-white rounded" id="summary-card">
+                    <div class="card-body">
+                        <div style="font-size:13px; color:#999; margin-top:5px; text-align:center">Last updated: <span id="update-time">April 16, 2020, 17:20 GMT</span> </div>
+                        <div id="maincounter-wrap">
+                            <h1>Coronavirus Cases:</h1>
+                            <div class="maincounter-number" >
+                            <span style="color:#aaa">128 </span>
+                            </div>
+                        </div>
+                        <div id="maincounter-wrap">
+                            <h1>Deaths:</h1>
+                            <div class="maincounter-number" style="color:rgb(207, 30, 30) ">
+                            <span>39</span>
+                            </div>
+                        </div>
+                        <div id="maincounter-wrap">
+                            <h1>Recovered:</h1>
+                            <div class="maincounter-number" style="color:#8ACA2B ">
+                            <span>87</span>
+                            </div>
+                        </div>
+                    <div style="margin-top:50px;"></div>
+                    </div>
+                  </div>
+            </div>
+            <div class="col-md-8 col-xd-8">
+                <table id="stat-table" class="table">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>State</th>
+                            <th>Total</th>
+                            <th>Active</th>
+                            <th>Discharged</th>
+                            <th>Deaths</th>
+                            <th>% Total</th>
+                            <th>% Active</th>
+                            <th>% Discharged</th>
+                            <th>% Deaths</th>
+                        </tr>
+                    </thead>
+                    <tbody><tr role="row" class="odd"><td tabindex="0">Lagos</td><td>232</td><td>140</td><td>85</td><td>7</td><td>24</td><td class="sorting_1">2</td><td>16</td><td>1</td></tr><tr role="row" class="even"><td tabindex="0">Abuja FCT</td><td>58</td><td>33</td><td>23</td><td>2</td><td>36</td><td class="sorting_1">1</td><td>12</td><td>0</td></tr><tr role="row" class="odd"><td tabindex="0">Osun</td><td>20</td><td>9</td><td>11</td><td>0</td><td>0</td><td class="sorting_1">0</td><td>0</td><td>0</td></tr><tr role="row" class="even"><td tabindex="0">Edo</td><td>15</td><td>14</td><td>0</td><td>1</td><td>0</td><td class="sorting_1">0</td><td>0</td><td>0</td></tr><tr role="row" class="odd"><td tabindex="0">Oyo</td><td>11</td><td>7</td><td>4</td><td>0</td><td>0</td><td class="sorting_1">0</td><td>0</td><td>0</td></tr><tr role="row" class="even"><td tabindex="0">Ogun</td><td>9</td><td>7</td><td>2</td><td>0</td><td>0</td><td class="sorting_1">0</td><td>0</td><td>0</td></tr><tr role="row" class="odd"><td tabindex="0">Bauchi</td><td>6</td><td>6</td><td>0</td><td>0</td><td>0</td><td class="sorting_1">0</td><td>0</td><td>0</td></tr><tr role="row" class="even"><td tabindex="0">Kaduna</td><td>6</td><td>6</td><td>0</td><td>0</td><td>0</td><td class="sorting_1">0</td><td>0</td><td>0</td></tr><tr role="row" class="odd"><td tabindex="0">Akwa Ibom</td><td>6</td><td>6</td><td>0</td><td>0</td><td>0</td><td class="sorting_1">0</td><td>0</td><td>0</td></tr><tr role="row" class="even"><td tabindex="0">Katsina</td><td>7</td><td>6</td><td>0</td><td>1</td><td>0</td><td class="sorting_1">0</td><td>0</td><td>0</td></tr><tr role="row" class="odd"><td tabindex="0">Kwara</td><td>4</td><td>4</td><td>0</td><td>0</td><td>0</td><td class="sorting_1">0</td><td>0</td><td>0</td></tr><tr role="row" class="even"><td tabindex="0">Kano</td><td>16</td><td>16</td><td>0</td><td>0</td><td>0</td><td class="sorting_1">0</td><td>0</td><td>0</td></tr><tr role="row" class="odd"><td tabindex="0">Delta</td><td>4</td><td>3</td><td>0</td><td>1</td><td>0</td><td class="sorting_1">0</td><td>0</td><td>0</td></tr><tr role="row" class="even"><td tabindex="0">Ondo</td><td>3</td><td>3</td><td>0</td><td>0</td><td>0</td><td class="sorting_1">0</td><td>0</td><td>0</td></tr><tr role="row" class="odd"><td tabindex="0">Enugu</td><td>2</td><td>1</td><td>1</td><td>0</td><td>0</td><td class="sorting_1">0</td><td>0</td><td>0</td></tr><tr role="row" class="even"><td tabindex="0">Ekiti</td><td>2</td><td>1</td><td>1</td><td>0</td><td>0</td><td class="sorting_1">0</td><td>0</td><td>0</td></tr><tr role="row" class="odd"><td tabindex="0">Rivers</td><td>2</td><td>1</td><td>1</td><td>0</td><td>0</td><td class="sorting_1">0</td><td>0</td><td>0</td></tr><tr role="row" class="even"><td tabindex="0">Benue</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td class="sorting_1">0</td><td>0</td><td>0</td></tr><tr role="row" class="odd"><td tabindex="0">Niger</td><td>2</td><td>2</td><td>0</td><td>0</td><td>0</td><td class="sorting_1">0</td><td>0</td><td>0</td></tr><tr role="row" class="even"><td tabindex="0">Anambra</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td class="sorting_1">0</td><td>0</td><td>0</td></tr></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+        <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap.min.js"></script>
+        <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+        <script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap.min.js"></script>
+        <script src="https://cdn.datatables.net/fixedheader/3.1.6/js/dataTables.fixedHeader.min.js"></script>
+        <!-- <script src="./js/tables.js"></script> -->
+</body>
+</html>
