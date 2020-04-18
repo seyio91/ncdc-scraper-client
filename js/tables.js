@@ -1,4 +1,53 @@
-import { createProgressBar, createSummary, percentageCalc } from './helpers'
+// import { createProgressBar, createSummary, percentageCalc } from './helpers.js'
+const dateParser = (string) => {
+    let dateObj = new Date(string);
+    return dateObj.toUTCString()
+}
+
+const createProgressBar = (change, orig, style) => {
+    let percentage = Math.round(change*100/orig);
+    return `
+    <div class="progress-bar ${style}" role="progressbar" style="width: ${percentage}%;" aria-valuenow="${percentage}" aria-valuemin="0" aria-valuemax="100">${percentage}%</div>`
+}
+
+const createSummary= (data) => {
+    let parsedDate = dateParser(data.updateTime)
+   let summary =  `
+    <div class="card-body">
+    <div style="font-size:13px; color:#999; margin-top:5px; text-align:center">Last updated: <span id="update-time">${parsedDate}</span> </div>
+    <div id="maincounter-wrap">
+        <h1>Coronavirus Cases:</h1>
+        <div class="maincounter-number" >
+        <span style="color:#aaa">${data.totalCases} </span>
+        </div>
+    </div>
+    <div id="maincounter-wrap">
+        <h1>Recovered:</h1>
+        <div class="maincounter-number" style="color:rgb(207, 30, 30) ">
+        <span>${data.totalDischarged}</span>
+        </div>
+    </div>
+    <div id="maincounter-wrap">
+        <h1>Deaths:</h1>
+        <div class="maincounter-number" style="color:#8ACA2B ">
+        <span>${data.totalDeath}</span>
+        </div>
+    </div>
+    <div id="maincounter-wrap">
+        <h1>Total Tests:</h1>
+        <div class="maincounter-number" style="color:#8ACA2B ">
+        <span style="color:#aaa">${data.testSum}</span>
+        </div>
+    </div>
+    `
+    return summary
+}
+
+const percentageCalc = (change, orig) => {
+    if (change == 0) return 0
+    let perc =  Math.round(change*100/orig);
+    return `+${change} (${perc}%)`
+}
 
 $(document).ready(function() {
     const summaryDiv = document.getElementById('summary-card');
@@ -11,8 +60,8 @@ $(document).ready(function() {
         .then(data=> {
             let { totalDischarged, totalCases, totalDeath } = data
             let content = createSummary(data);
-            let recovery = createProgressBar(totalDischarged, totalCases)
-            let deaths = createProgressBar(totalDeath, totalCases)
+            let recovery = createProgressBar(totalDischarged, totalCases, 'bg-recovery')
+            let deaths = createProgressBar(totalDeath, totalCases, 'bg-fatality')
             recoveryBar.innerHTML = recovery;
             fatalityBar.innerHTML = deaths;
             summaryDiv.innerHTML = content;
@@ -91,3 +140,5 @@ $(document).ready(function() {
     }
 
 } );
+
+// #343a40

@@ -1,15 +1,15 @@
 const dateParser = (string) => {
-    dateObj = new Date(string);
+    let dateObj = new Date(string);
     return dateObj.toUTCString()
 }
 
-const createProgressBar = (change, orig) => {
+export const createProgressBar = (change, orig) => {
     let percentage = Math.round(change*100/orig);
     return `
     <div class="progress-bar" role="progressbar" style="width: ${percentage}%;" aria-valuenow="${percentage}" aria-valuemin="0" aria-valuemax="100">${percentage}%</div>`
 }
 
-function createSummary(data){
+export const createSummary= (data) => {
     let parsedDate = dateParser(data.updateTime)
    let summary =  `
     <div class="card-body">

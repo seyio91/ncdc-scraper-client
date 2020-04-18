@@ -1,11 +1,17 @@
 body{
     margin: 0;
     height: auto;
+    background-color: #32383d;
+    color: white;
 }
 
 /* .summary-card {
     max-width: 480px;
 } */
+
+.card {
+    background-color: #454c52;
+}
 
 header {
     margin-bottom: 20px;
@@ -63,10 +69,30 @@ table td:first-child {
     font-weight: 700;
 }
 
-table .recovery {
-    color:green;
+.recovery {
+    color:rgb(8, 180, 8);
 }
 
-table .deaths {
-    color:red;
+.deaths {
+    color:rgb(255, 38, 0);
 }
+
+.bg-recovery {
+    background-color:rgb(8, 180, 8);
+}
+
+.bg-fatality {
+    background-color:rgb(255, 38, 0);
+}
+
+.table-dark td, .table-dark th, .table-dark thead th {
+    border-color: #32383d;;
+}
+
+.table-dark {
+    background-color: #454c52;
+}
+
+thead {
+    color: #b4b4b4;;
+} 
