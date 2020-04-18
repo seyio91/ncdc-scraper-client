@@ -1,51 +1,9 @@
+import { createProgressBar, createSummary, percentageCalc } from './helpers'
+
 $(document).ready(function() {
     const summaryDiv = document.getElementById('summary-card');
     const recoveryBar = document.getElementById('recovery-progress');
     const fatalityBar = document.getElementById('fatality-rate');
-
-    function dateParser(string){
-        dateObj = new Date(string);
-        return dateObj.toUTCString()
-    }
-
-    function createProgressBar(change, orig){
-        let percentage = Math.round(change*100/orig);
-        return `
-        <div class="progress-bar" role="progressbar" style="width: ${percentage}%;" aria-valuenow="${percentage}" aria-valuemin="0" aria-valuemax="100">${percentage}%</div>`
-    }
-
-    function createSummary(data){
-        let parsedDate = dateParser(data.updateTime)
-       let summary =  `
-        <div class="card-body">
-        <div style="font-size:13px; color:#999; margin-top:5px; text-align:center">Last updated: <span id="update-time">${parsedDate}</span> </div>
-        <div id="maincounter-wrap">
-            <h1>Coronavirus Cases:</h1>
-            <div class="maincounter-number" >
-            <span style="color:#aaa">${data.totalCases} </span>
-            </div>
-        </div>
-        <div id="maincounter-wrap">
-            <h1>Recovered:</h1>
-            <div class="maincounter-number" style="color:rgb(207, 30, 30) ">
-            <span>${data.totalDischarged}</span>
-            </div>
-        </div>
-        <div id="maincounter-wrap">
-            <h1>Deaths:</h1>
-            <div class="maincounter-number" style="color:#8ACA2B ">
-            <span>${data.totalDeath}</span>
-            </div>
-        </div>
-        <div id="maincounter-wrap">
-            <h1>Total Tests:</h1>
-            <div class="maincounter-number" style="color:#8ACA2B ">
-            <span style="color:#aaa">${data.testSum}</span>
-            </div>
-        </div>
-        `
-        return summary
-    }
 
     // get totals from /summary
     fetch('http://localhost:3000/summary')
@@ -60,12 +18,6 @@ $(document).ready(function() {
             summaryDiv.innerHTML = content;
         })
         .catch(err => console.log(err, 'error'))
-
-    const percentageCalc = (change, orig) => {
-        if (change == 0) return 0
-        let perc =  Math.round(change*100/orig);
-        return change + ` (${perc}%)`
-    }
 
 
     const table = $('#stat-table').DataTable({
@@ -98,9 +50,7 @@ $(document).ready(function() {
             { "data": null, render: function(data, type){
                 return data.changeActive
             } }
-            // { "data": "changeDischarged" },
-            // { "data": "changeDeaths"}
-            // { "data": "changeDeaths", render: $.fn.dataTable.render.number( ',', '.', 0, '', '%2' ) }
+
         ],
         "paging": false,
         "info": false,
