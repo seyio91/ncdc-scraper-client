@@ -110,8 +110,9 @@ $(document).ready(function() {
         "columnDefs": [
             { responsivePriority: 1, targets: 0 },
             { responsivePriority: 2, targets: 1 },
-            { responsivePriority: 10001, targets: 2 },
-            { responsivePriority: 10001, targets: 5 },
+            { responsivePriority: 3, targets: 3 },
+            { responsivePriority: 4, targets: 5 },
+            { responsivePriority: 10001, targets: [2,4,6,8] },
             { type: 'natural', targets: [ 2, 4, 6 ] },
             {  className: "recovery", targets: [3, 4] },
             {  className: "deaths", targets: [5, 6] }
