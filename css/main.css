@@ -54,3 +54,19 @@ header {
     color: #696969;
     font-size: 54px;
 }
+
+table {
+    font-weight: 500;
+}
+
+table td:first-child {
+    font-weight: 700;
+}
+
+table .recovery {
+    color:green;
+}
+
+table .deaths {
+    color:red;
+}
