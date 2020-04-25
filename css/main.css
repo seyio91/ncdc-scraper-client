@@ -61,6 +61,13 @@ header {
     font-size: 54px;
 }
 
+
+.analytics {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+
 table {
     font-weight: 500;
 }
@@ -74,7 +81,11 @@ table td:first-child {
 }
 
 .deaths {
-    color:rgb(255, 38, 0);
+    color:rgba(255, 99, 132, 1);
+}
+
+.activecase {
+    color: rgba(245, 215, 110, 1);
 }
 
 .bg-recovery {
@@ -82,7 +93,7 @@ table td:first-child {
 }
 
 .bg-fatality {
-    background-color:rgb(255, 38, 0);
+    background-color:rgba(193, 4, 45, 0.7);
 }
 
 .table-dark td, .table-dark th, .table-dark thead th {
@@ -95,4 +106,14 @@ table td:first-child {
 
 thead {
     color: #b4b4b4;;
-} 
+}
+
+
+tbody {
+    font-weight: 600;
+}
+
+.dateselect {
+    padding: 10px;
+}
+

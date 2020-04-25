@@ -32,29 +32,7 @@ const arrayGenerator = (largeArr) => {
     return { dataSet1, dataSet2, dataSet3, dataSet4 }
 }
 
-const generateCalendar = (events) => {
-    $('#mini-clndr').clndr({
-        template: $('#mini-clndr-template').html(),
-        events: events,
-        clickEvents: { 
-            click: function(target) {
-                console.log(target.date)
-                if(target.events.length) { 
-                    var daysContainer = $('#mini-clndr').find('.days-container'); 
-                    daysContainer.toggleClass('show-events', true); 
-                    var selectedClass = target.date.format('YYYY-MM-DD'); 
-                    $('.eventday').hide(); 
-                    $('#event-'+selectedClass).show(); 
-                    $('#mini-clndr').find('.x-button').click( function() { 
-                        daysContainer.toggleClass('show-events', false); 
-                    });
-                } 
-            } 
-        },
-        adjacentDaysChangeMonth: true,
-        forceSixRows: true
-      });
-}
+
 
 const lineChartGen = (data1, data2, data3, data4) => {
 
@@ -89,4 +67,28 @@ const lineChartGen = (data1, data2, data3, data4) => {
               }
           }
           });
+}
+
+const generateCalendar = (events) => {
+    $('#mini-clndr').clndr({
+        template: $('#mini-clndr-template').html(),
+        events: events,
+        clickEvents: { 
+            click: function(target) {
+                console.log(target.date)
+                if(target.events.length) { 
+                    var daysContainer = $('#mini-clndr').find('.days-container'); 
+                    daysContainer.toggleClass('show-events', true); 
+                    var selectedClass = target.date.format('YYYY-MM-DD'); 
+                    $('.eventday').hide(); 
+                    $('#event-'+selectedClass).show(); 
+                    $('#mini-clndr').find('.x-button').click( function() { 
+                        daysContainer.toggleClass('show-events', false); 
+                    });
+                } 
+            } 
+        },
+        adjacentDaysChangeMonth: true,
+        forceSixRows: true
+      });
 }

@@ -1,12 +1,14 @@
 // import { createProgressBar, createSummary, percentageCalc } from './helpers.js'
 const baseDate = '2020-02-29'
+const  baseEventURL = 'http://localhost:3000/events';
+const currentDate = moment().format('YYYY-MM-DD');
+
 const dateParser = (string) => {
     return moment(string).format('LLLL')
 }
 
 const createProgressBar = (change, orig, style) => {
     let percentage = Math.round(change*100/orig);
-    console.log(percentage)
     return `
     <div class="progress-bar ${style}" role="progressbar" style="width: ${percentage}%;" aria-valuenow="${percentage}" aria-valuemin="0" aria-valuemax="100">${percentage}%</div>`
 }
@@ -19,23 +21,23 @@ const createSummary= (data) => {
     <div id="maincounter-wrap">
         <h1>Coronavirus Cases:</h1>
         <div class="maincounter-number" >
-        <span style="color:#aaa">${data.totalcases} </span>
-        </div>
-    </div>
-    <div id="maincounter-wrap">
-        <h1>Recovered:</h1>
-        <div class="maincounter-number" style="color:rgb(207, 30, 30) ">
-        <span>${data.discharged}</span>
+        <span style="color:rgba(0, 181, 204, 0.7)">${data.totalcases} </span>
         </div>
     </div>
     <div id="maincounter-wrap">
         <h1>Deaths:</h1>
-        <div class="maincounter-number" style="color:#8ACA2B ">
-        <span>${data.deaths}</span>
+        <div class="maincounter-number" style="color:rgb(207, 30, 30) ">
+        <span >${data.deaths}</span>
         </div>
     </div>
     <div id="maincounter-wrap">
-        <h1>Total Tests:</h1>
+        <h1>Recovered:</h1>
+        <div class="maincounter-number" style="color:#8ACA2B ">
+        <span>${data.discharged}</span>
+        </div>
+    </div>
+    <div id="maincounter-wrap">
+        <h1>Tests:</h1>
         <div class="maincounter-number" style="color:#8ACA2B ">
         <span style="color:#aaa">${data.test}</span>
         </div>
@@ -49,7 +51,7 @@ const prevDayCheck = (day) => {
 }
 
 const nextDayCheck = (day) => {
-    return moment(day).isBefore(moment().format('YYYY-MM-DD'))
+    return moment(day).isBefore(currentDate)
 }
 
 
@@ -59,14 +61,51 @@ const percentageCalc = (change, orig) => {
     return `+${change} (${perc}%)`
 }
 
+const urlGen = (date) => {
+    date = moment(date);
+    let url = date.isSame(currentDate)? baseEventURL: `${baseEventURL}/${date.format('YYYY-MM-DD')}`
+    return url
+}
+
+const arrayGenerator = (largeArr) => {
+    dataSet1 = [];
+    dataSet2 = [];
+    dataSet3 = [];
+    dataSet4 = [];
+
+    largeArr.forEach(dict => {
+        if (dict.totalcases > 0){
+            dataSet1.push(dict.totalcases);
+            dataSet2.push(dict.discharged);
+            dataSet3.push(dict.deaths);
+            dataSet4.push(moment(dict.date).format('YYYY-MM-DD'))
+        }
+    })
+
+    return { dataSet1, dataSet2, dataSet3, dataSet4 }
+}
+
+
+
 
 $(document).ready(function() {
     const summaryDiv = document.getElementById('summary-card');
     const recoveryBar = document.getElementById('recovery-progress');
     const fatalityBar = document.getElementById('fatality-rate');
-    const displayDate = document.getElementById('displayDate');
     const prevDate = document.getElementById('previousDate');
     const nextDate = document.getElementById('nextDate');
+    const tdChart = document.getElementById('donut-total');
+    const odChart = document.getElementById('donut-outcome');
+    const myChart = document.getElementById('myChart');
+    const searchDate = document.getElementById('searchDate')
+
+
+    $( "#datepicker" ).datepicker({
+        dateFormat: 'yy-mm-dd',
+        minDate: baseDate,
+        maxDate: currentDate,
+        defaultDate: currentDate
+    });
     
 
     // get totals from /summary
@@ -75,13 +114,17 @@ $(document).ready(function() {
         .then(response => {
             if (response.status == 'success'){
 
-                let { discharged, totalcases, deaths } = response.data;
+                let { activecases, discharged, totalcases, deaths } = response.data;
                 let content = createSummary(response.data);
                 let recovery = createProgressBar(discharged, totalcases, 'bg-recovery')
                 let deathbar = createProgressBar(deaths, totalcases, 'bg-fatality')
                 recoveryBar.innerHTML = recovery;
                 fatalityBar.innerHTML = deathbar;
                 summaryDiv.innerHTML = content;
+                tdChart.style.display = 'block'
+                odChart.style.display = 'block'
+                createTotalDonut([activecases, discharged, deaths])
+                createOutcomeDonut([discharged, deaths])
             } else {
                 // perform some error handling
                 return
@@ -92,20 +135,25 @@ $(document).ready(function() {
 
     prevDate.addEventListener('click', (evt) => {
         evt.preventDefault();
-        let date = displayDate.innerText;
+        let date = $('#datepicker').val();
         if(!prevDayCheck(date)) return;
         let newPrev = moment(date).subtract(1, 'day')
-        // render the whole screen here
         renderDate(newPrev)
     })
 
     nextDate.addEventListener('click', (evt) => {
         evt.preventDefault();
-        let date = displayDate.innerText;
+        let date = $('#datepicker').val();
         if(!nextDayCheck(date)) return;
         let newDay = moment(date).add(1, 'day')
-        // render the whole screen here
         renderDate(newDay)
+    })
+
+    searchDate.addEventListener('click', (evt) => {
+        evt.preventDefault();
+        let date = $('#datepicker').val();
+        eventURL = urlGen(date)
+        dataLoad(eventURL)
     })
 
 
@@ -117,17 +165,21 @@ $(document).ready(function() {
             prevDate.removeAttribute('style')
         }
 
-        if (date.isSame(moment().format('YYYY-MM-DD'))){
+        if (date.isSame(currentDate)){
             nextDate.style.opacity = 0.1
         } else {
             nextDate.removeAttribute('style')
         }
         date = moment(string).format('YYYY-MM-DD')
-        displayDate.innerText = date;
+        $('#datepicker').val(date)
     }
     
 
     const dataOptions = {
+        "language": {
+            searchPlaceholder: "Search State",
+            search: "",
+          },
         "columns": [
             { "data": null, render: function(data, type){
                 return data.name;
@@ -172,67 +224,197 @@ $(document).ready(function() {
             { responsivePriority: 10001, targets: [2,4,6,8] },
             { type: 'natural', targets: [ 2, 4, 6 ] },
             {  className: "recovery", targets: [3, 4] },
-            {  className: "deaths", targets: [5, 6] }
+            {  className: "deaths", targets: [5, 6] },
+            {  className: "activecase", targets: [7, 8] },
+            { "searchable": false, "targets": [1,2,3,4,5,6,7,8] }
         ],
     }
 
     const table = $('#stat-table').DataTable(dataOptions);
 
-    fetch('http://localhost:3000/events')
-    .then(res => res.json())
-        .then(response => {
-            if (response.status == 'success'){
-                // render date field
-                renderDate(response.data[0].date)
-                // renderDate('2020-04-24')
-                data = response.data
-                table.rows.add(data)
-                    .draw();
+
+
+    // Chart ************************************************************************************
+    const lineChartGen = (data1, data2, data3, data4) => {
+        let lineChart = new Chart(myChart, {
+              type: 'line',
+              data: {
+                  labels: data4.reverse(),
+                //   labels: ['world'],
+                  datasets: [{ 
+                      data: data1.reverse(),
+                      label: "Total Cases",
+                      borderColor: 'rgba(0, 181, 204, 0.7)',
+                      fill: true
+                  }, { 
+                      data: data2.reverse(),
+                      label: "Recovery",
+                      borderColor: 'rgba(123, 239, 178, 0.7)',
+                      fill: true
+                  }, { 
+                      data: data3.reverse(),
+                      label: "Deaths",
+                      borderColor: 'rgba(255, 99, 132, 0.7)',
+                      fill: true
+                  }
+                  ]
+              },
+              options: {
+                  responsive: true,
+                  title: {
+                  display: true,
+                  text: 'Average Cases Per Week',
+                  fontSize: 18,
+                  fontColor: "#FFFFFF"
+                  },
+                  legend: {
+                    display: true,
+                    labels: {
+                        fontColor: '#FFFFFF'
+                    }
+                },
+                // new options here
+                scales: {
+                    xAxes: [{ 
+                        ticks: {
+                          fontColor: "#FFFFFF",
+                        },
+                    }],
+                    yAxes: [{
+                        ticks: {
+                            fontColor: "#FFFFFF",
+                          },
+                    }],
+                }
+              }
+              });
+    }
+    // Chart end
+
+
+    // **donuts
+    const createTotalDonut = (data) => {
+        let totalDoughnut = new Chart(tdChart, {
+            type: 'doughnut',
+            data: {
+                labels: ['ACTIVE', 'RECOVERED', 'DEAD'],
+                datasets: [{
+                  label: '# of Cases',
+                  data: data,
+                  backgroundColor: [
+                    'rgba(245, 215, 110, 0.7)',
+                    'rgba(123, 239, 178, 0.7)',
+                    'rgba(255, 99, 132, 0.7)'
+                    
+                  ],
+                  borderColor: [
+                    'rgba(245, 215, 110, 1)',
+                    'rgba(123, 239, 178, 1)',
+                    'rgba(255,99,132,1)'
+                  ],
+                  borderWidth: 1
+                }]
+              },
+            options : {
+                responsive: true,
+                title: {
+                    display: true,
+                    position: "top",
+                    text: "Totals Chart",
+                    fontSize: 18,
+                    fontColor: "#FFFFFF"
+                  },
+                  legend: {
+                    display: true,
+                    labels: {
+                        fontColor: '#FFFFFF'
+                    }
+                }
             }
         })
-        .catch()
+    }
+
+    const createOutcomeDonut = (data) => {
+        let outcomeDoughnut = new Chart(odChart, {
+            type: 'doughnut',
+            data: {
+                labels: ['RECOVERED', 'DEAD'],
+                datasets: [{
+                  label: '# of Outcomes',
+                  data: data,
+                  backgroundColor: [
+                    'rgba(123, 239, 178, 0.7)',
+                    'rgba(255, 99, 132, 0.7)'
+                  ],
+                  borderColor: [
+                    'rgba(123, 239, 178, 1)',
+                    'rgba(255,99,132,1)'
+                  ],
+                  borderWidth: 1
+                }]
+              },
+            options : {
+                responsive: true,
+                title: {
+                    display: true,
+                    position: "top",
+                    text: "Outcomes Chart",
+                    fontSize: 18,
+                    fontColor: "#FFFFFF"
+                  },
+                  legend: {
+                    display: true,
+                    labels: {
+                        fontColor: '#FFFFFF'
+                    }
+                }
+            }
+        })
+    }
 
 
 
 
-    // Test Click
-    const testData = [{
-        "id": 731,
-        "name": "Lagos",
-        "totalcases": 657,
-        "activecases": 525,
-        "discharged": 116,
-        "deaths": 16,
-        "changetotal": 75,
-        "changeactive": 65,
-        "changedischarged": 10,
-        "changedeaths": 0,
-        "date": "2020-04-23T22:00:00.000Z"
-      },
-      {
-        "id": 731,
-        "name": "Lagos",
-        "totalcases": 657,
-        "activecases": 525,
-        "discharged": 116,
-        "deaths": 16,
-        "changetotal": 75,
-        "changeactive": 65,
-        "changedischarged": 10,
-        "changedeaths": 0,
-        "date": "2020-04-23T22:00:00.000Z"
-      }
-    ]
 
-    const testClick = document.getElementById('testload');
+    // donut end
 
-    testClick.addEventListener('click', (evt)=> {
-        evt.preventDefault();
-        table.clear();
-        table.rows.add(testData)
-            .draw()
+    fetch('http://localhost:3000/timeline')
+    .then(res => res.json())
+    .then(response => {
+        console.log(response)
+        if (response.status == 'success'){
+            datasets = arrayGenerator(response.data)
+            const { dataSet1, dataSet2 , dataSet3, dataSet4 } = datasets;
+            myChart.style.display = 'block'
+            lineChartGen(dataSet1, dataSet2 , dataSet3, dataSet4)
+        }
     })
-    // 
+    .catch(err => console.log(err))
+
+
+    const dataLoad = (eventURL) => {
+        console.log('event loaded is ', eventURL)
+        fetch(eventURL)
+        .then(res => res.json())
+            .then(response => {
+                if (response.status == 'success' && response.data.length){
+                    // render date field
+                    let date = eventURL == baseEventURL ? currentDate: response.data[0].date;
+                    renderDate(date)
+                    data = response.data
+                    table.clear();
+                    table.rows.add(data)
+                        .draw();
+                }
+            })
+            .catch()
+    }
+
+    const loadGraph = () => {
+
+    }
+
+    dataLoad(baseEventURL);
 
 
     source = new EventSource('http://localhost:3000/stream');
