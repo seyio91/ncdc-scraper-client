@@ -114,6 +114,51 @@ tbody {
 }
 
 .dateselect {
-    padding: 10px;
+    padding: 5px;
 }
 
+.headinfo {
+    margin-bottom: 15px;
+}
+
+.data-label {
+    text-align: center;
+    padding: 10px 10px 0 10px;
+    font-weight: 600;
+}
+
+.main-title {
+    padding: 10px 10px 10px 0;
+    margin:  10px 10px 10px 0;
+}
+
+#timenav {
+    position: absolute;
+    right: 30px;
+}
+
+.btn-primary {
+    background-color: #1b95e0 !important;
+}
+
+ul {
+    list-style-type: none;
+}
+
+.databody {
+    height: 100%;
+}
+
+/* responsive text queries */
+@media screen and (max-width: 992px) {
+    p,.btn,input,div,span,h4 {
+      font-size: 98%;
+    }
+
+  }
+  
+  @media screen and (max-width: 768px) {
+    p,.btn,input,div,span,h4 {
+      font-size: 97%;
+    }
+  }

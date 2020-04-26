@@ -1,6 +1,11 @@
 // import { createProgressBar, createSummary, percentageCalc } from './helpers.js'
 const baseDate = '2020-02-29'
-const  baseEventURL = 'http://localhost:3000/events';
+const  baseEventURL = 'http://localhost:3000/api/user/v1/events';
+const graphURL = 'http://localhost:3000/api/user/v1/timeline';
+const streamURL = 'http://localhost:3000/api/user/v1/stream';
+const summaryURL = 'http://localhost:3000/api/user/v1/summary';
+const globalStatURL = "https://api.thevirustracker.com/free-api?global=stats"
+
 const currentDate = moment().format('YYYY-MM-DD');
 
 const dateParser = (string) => {
@@ -44,6 +49,34 @@ const createSummary= (data) => {
     </div>
     `
     return summary
+}
+
+const totalDataLabel = (active, recovered, dead) => {
+    return `<p>Active: <span class="activecase">${active}</span>    Recovered: <span class="recovery">${recovered}</span>   Dead: <span class="deaths">${dead}</span></p>`
+}
+
+const outcomeDataLabel = ( recovered, dead) => {
+    return `<p>Recovered: <span class="recovery">${recovered}</span>    Dead: <span class="deaths">${dead}</span></p>`
+}
+
+const globalRender = (total, resolved, deaths) => {
+    html = `
+            <div class="row pt-1 small font-weight-bold">
+                <div class="col">
+                    Global Report:
+                </div>
+                <div class="col">
+                    Confirmed: <span style="color:rgba(0, 181, 204, 0.7);">${total}</span>
+                </div>
+                <div class="col">
+                    Deaths: <span class="deaths">${resolved}</span>
+                </div>
+                <div class="col">
+                    Recovered: <span class="recovery">${deaths}</span>
+                </div>
+            </div>
+        `
+    return html
 }
 
 const prevDayCheck = (day) => {
@@ -98,8 +131,12 @@ $(document).ready(function() {
     const odChart = document.getElementById('donut-outcome');
     const myChart = document.getElementById('myChart');
     const searchDate = document.getElementById('searchDate')
+    const totalLabel = document.getElementById('tData-label')
+    const outcomeLabel = document.getElementById('outcomelabel')
+    const globalDiv = document.getElementById('globalstats')
 
 
+    // Initialize Date Picker
     $( "#datepicker" ).datepicker({
         dateFormat: 'yy-mm-dd',
         minDate: baseDate,
@@ -108,8 +145,8 @@ $(document).ready(function() {
     });
     
 
-    // get totals from /summary
-    fetch('http://localhost:3000/summary')
+    // Initialize Side Bar, Summary and Graphs
+    fetch(summaryURL)
     .then(res => res.json())
         .then(response => {
             if (response.status == 'success'){
@@ -124,7 +161,9 @@ $(document).ready(function() {
                 tdChart.style.display = 'block'
                 odChart.style.display = 'block'
                 createTotalDonut([activecases, discharged, deaths])
+                totalLabel.innerHTML = totalDataLabel(activecases, discharged, deaths)
                 createOutcomeDonut([discharged, deaths])
+                outcomeLabel.innerHTML = outcomeDataLabel(discharged, deaths)
             } else {
                 // perform some error handling
                 return
@@ -133,6 +172,22 @@ $(document).ready(function() {
         .catch(err => console.log(err, 'error'));
 
 
+    const loadGlobalStats = () => {
+        fetch(globalStatURL)
+        .then(res => res.json())
+            .then(response => {
+                if (response.stat != 'ok') return;
+                const { total_cases, total_recovered, total_deaths } = response.results[0];
+                globalDiv.innerHTML = globalRender(total_cases, total_recovered, total_deaths)
+            })
+            .catch()
+    }
+
+
+    // loadGlobalStats()
+
+
+    // Date Change Event Listeners
     prevDate.addEventListener('click', (evt) => {
         evt.preventDefault();
         let date = $('#datepicker').val();
@@ -173,8 +228,12 @@ $(document).ready(function() {
         date = moment(string).format('YYYY-MM-DD')
         $('#datepicker').val(date)
     }
-    
 
+
+
+
+    
+    // Options for DataTables
     const dataOptions = {
         "language": {
             searchPlaceholder: "Search State",
@@ -212,7 +271,6 @@ $(document).ready(function() {
 
         ],
         "paging": false,
-        // "info": false,
         "responsive": true,
         "fixedHeader": true,
         "order": [[1, "desc"]],
@@ -234,7 +292,7 @@ $(document).ready(function() {
 
 
 
-    // Chart ************************************************************************************
+    // Chart Creating Functions
     const lineChartGen = (data1, data2, data3, data4) => {
         let lineChart = new Chart(myChart, {
               type: 'line',
@@ -292,7 +350,7 @@ $(document).ready(function() {
     // Chart end
 
 
-    // **donuts
+    // Doughnut Charts
     const createTotalDonut = (data) => {
         let totalDoughnut = new Chart(tdChart, {
             type: 'doughnut',
@@ -371,14 +429,12 @@ $(document).ready(function() {
             }
         })
     }
-
-
-
-
-
     // donut end
 
-    fetch('http://localhost:3000/timeline')
+
+
+
+    fetch(graphURL)
     .then(res => res.json())
     .then(response => {
         console.log(response)
@@ -410,19 +466,16 @@ $(document).ready(function() {
             .catch()
     }
 
-    const loadGraph = () => {
-
-    }
-
     dataLoad(baseEventURL);
 
 
-    source = new EventSource('http://localhost:3000/stream');
+    source = new EventSource(streamURL);
 
     source.onopen = function(e){
         console.log('connection made');
     }
 
+    // Real Time Update Stream
     source.addEventListener('event', function(evt){
         const { summary, data } = JSON.parse(evt.data);
         updatedSum = createSummary(summary)

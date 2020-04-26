@@ -17,8 +17,36 @@
         <div class="label-counter" id="page-top">Nigeria COVID-19 Statistics</div>
     </header>
     <div class="container-fluid">
+
         <div class="row">
-            <div class="col-sm col-md-4 col-xd-3">
+            <div class="col headinfo">
+                <div class="card card mx-auto shadow p-1 mb-1 rounded-lg">
+                    <div class="card-body p-1">
+                        <div class="row">
+                            <div class="col-8 col-md-10 small ">
+                                <p>
+                                    Disclaimer!. Information Gathered from NCDC Site. Summary and State Statistics are updated in real-time using Server Sent Events. Visit the<a href="https://covid19.ncdc.gov.ng/" target="_blank">NCDC WEBSITE</a> for more information on covid 19. Also Feel Free to leave some feedback on the twitter handle or email. 
+                                </p>
+                            </div>
+                            <div class="col-md-2 col-4 ">
+                                <div class="twitter">
+                                    <a href="https://twitter.com/intent/tweet?screen_name=seyio1187&ref_src=twsrc%5Etfw" class="twitter-mention-button" data-size="large" data-show-count="false">@seyio1187</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                                </div>
+                                <div class="mailto">
+                                    <a href="mailto:linuxcloudng@gmail.com" target="_blank" class="btn btn-danger btn-sm"><span class="font-weight-bold">@ Mail me</span></a>
+                                </div>
+                            </div>
+
+                            <div class="col col-xl-6 offset-xl-4" id="globalstats"></div>
+                        </div>
+                        <marquee direction="right">Test</marquee>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-5 col-xl-4 databody">
 
                 <div class="card mx-auto shadow p-3 mb-5 rounded-lg" id="summary-card">
                     <div class="card-body">
@@ -55,32 +83,39 @@
                   <div class="card mx-auto shadow p-3 mb-5 rounded-lg" id="summary-card">
 
                     <canvas id="myChart" class="analytics" style="display: none;"></canvas>
-<!--        
+       
                     <div class="analytics">
-                        <canvas id="myChart" class="analytics"></canvas>
-                    </div> -->
-                    <canvas id="donut-total" class="analytics" style="display: none;"></canvas>
+                        <canvas id="donut-total" style="display: none;"></canvas>
+                        <div class="data-label" id="tData-label"></div>
+                    </div>
+                    
 
-                    <canvas id="donut-outcome" class="analytics" style="display: none;"></canvas>
-                    <img class="loading-icon" src="/images/loading.gif" alt="" style="display: none;">
+                    <div class="analytics">
+                        <canvas id="donut-outcome" style="display: none;"></canvas>
+                        <div class="data-label" id="outcomelabel"></div>
+                    </div>
+                    
                   </div>
             </div>
 
-            
-            <div class="col-md-8 col-xd-8">
+
+            <div class="col-md-12 col-lg-7 col-xl-8 databody">
                 <div class="card mx-auto shadow p-3 mb-5 rounded-lg">
                     <div id="timenav">
                         <!-- redesign -->
                         Date: 
                         <a href="#" id="previousDate" class="dateselect">&#8249;&#8249;&#8249;</a>
-                        <input type="text" id="datepicker" readonly="readonly" class="rounded">
+                        <input type="text" id="datepicker" readonly="readonly" class="rounded input-sm" style="width: 100px;">
                         <a href="#" id="nextDate" class="dateselect">&#8250;&#8250;&#8250;</a>
-                        <a href="#" class="rounded btn btn-primary" id="searchDate">Go</a>
+                        <a href="#" class="rounded btn btn-primary btn-sm" id="searchDate">Go</a>
                     </div>
 
 
                     <div class="card-body">
-                        <h2 class="card-title">States Covid-19 Stats</h5>
+                        <div class="main-title">
+                            <h1 class="card-title">Nigeria Covid19 Statistics</h1>
+                        </div>
+                        
                             <div class="row">
                                 <div class="col-sm-4 small">
                                     Total Recovery Rate:
@@ -102,18 +137,17 @@
                                         <tr>
                                             <th>State</th>
                                             <th>Total</th>
-                                            <th>change %</th>
+                                            <th>New cases %</th>
                                             <th>Discharged</th>
-                                            <th>change %</th>
+                                            <th>Closed %</th>
                                             <th>Deaths</th>
-                                            <th>change %</th>
+                                            <th>New Deaths %</th>
                                             <th>Active %</th>
                                             <th>change %</th>
                                         </tr>
                                     </thead>
                                 </table>
                             </div>                            
-
                     </div>
                 </div>
             </div>
