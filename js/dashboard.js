@@ -1,9 +1,8 @@
-// import { createProgressBar, createSummary, percentageCalc } from './helpers.js'
 const baseDate = '2020-02-29'
-const  baseEventURL = 'http://localhost:3000/api/user/v1/events';
-const graphURL = 'http://localhost:3000/api/user/v1/timeline';
-const streamURL = 'http://localhost:3000/api/user/v1/stream';
-const summaryURL = 'http://localhost:3000/api/user/v1/summary';
+const  baseEventURL = '/api/user/v1/events';
+const graphURL = '/api/user/v1/timeline';
+const streamURL = '/api/user/v1/stream';
+const summaryURL = '/api/user/v1/summary';
 const globalStatURL = "https://api.thevirustracker.com/free-api?global=stats"
 
 const currentDate = moment().format('YYYY-MM-DD');
@@ -61,7 +60,7 @@ const outcomeDataLabel = ( recovered, dead) => {
 
 const globalRender = (total, resolved, deaths) => {
     html = `
-            <div class="row pt-1 small font-weight-bold">
+            <div class="row pt-1 font-weight-bold">
                 <div class="col">
                     Global Report:
                 </div>
@@ -134,6 +133,8 @@ $(document).ready(function() {
     const totalLabel = document.getElementById('tData-label')
     const outcomeLabel = document.getElementById('outcomelabel')
     const globalDiv = document.getElementById('globalstats')
+    const progresstotal = document.getElementById('progress-totalcases')
+    const progresstest = document.getElementById('progress-totaltest')
 
 
     // Initialize Date Picker
@@ -153,10 +154,7 @@ $(document).ready(function() {
 
                 let { activecases, discharged, totalcases, deaths } = response.data;
                 let content = createSummary(response.data);
-                let recovery = createProgressBar(discharged, totalcases, 'bg-recovery')
-                let deathbar = createProgressBar(deaths, totalcases, 'bg-fatality')
-                recoveryBar.innerHTML = recovery;
-                fatalityBar.innerHTML = deathbar;
+
                 summaryDiv.innerHTML = content;
                 tdChart.style.display = 'block'
                 odChart.style.display = 'block'
@@ -169,7 +167,7 @@ $(document).ready(function() {
                 return
             }
         })
-        .catch(err => console.log(err, 'error'));
+        .catch(err => console.error(err));
 
 
     const loadGlobalStats = () => {
@@ -180,11 +178,8 @@ $(document).ready(function() {
                 const { total_cases, total_recovered, total_deaths } = response.results[0];
                 globalDiv.innerHTML = globalRender(total_cases, total_recovered, total_deaths)
             })
-            .catch()
+            .catch(err => console.error(err));
     }
-
-
-    // loadGlobalStats()
 
 
     // Date Change Event Listeners
@@ -437,7 +432,6 @@ $(document).ready(function() {
     fetch(graphURL)
     .then(res => res.json())
     .then(response => {
-        console.log(response)
         if (response.status == 'success'){
             datasets = arrayGenerator(response.data)
             const { dataSet1, dataSet2 , dataSet3, dataSet4 } = datasets;
@@ -445,34 +439,44 @@ $(document).ready(function() {
             lineChartGen(dataSet1, dataSet2 , dataSet3, dataSet4)
         }
     })
-    .catch(err => console.log(err))
+    .catch(err => console.error(err))
 
+    const daySummaryBar = (summary) => {
+        const { discharged, totalcases, deaths, test } = summary;
+        let recovery = createProgressBar(discharged, totalcases, 'bg-recovery')
+        let deathbar = createProgressBar(deaths, totalcases, 'bg-fatality')
+        recoveryBar.innerHTML = recovery;
+        fatalityBar.innerHTML = deathbar;
+        progresstotal.innerText = totalcases;
+        progresstest.innerText = test;
+    }
 
     const dataLoad = (eventURL) => {
-        console.log('event loaded is ', eventURL)
         fetch(eventURL)
         .then(res => res.json())
             .then(response => {
-                if (response.status == 'success' && response.data.length){
-                    // render date field
-                    let date = eventURL == baseEventURL ? currentDate: response.data[0].date;
+                if (response.status == 'success'){
+                    const { summary, data } = response.data
+                    let date = eventURL == baseEventURL ? currentDate: data[0].date;
+                    daySummaryBar(summary)
                     renderDate(date)
-                    data = response.data
                     table.clear();
                     table.rows.add(data)
                         .draw();
                 }
             })
-            .catch()
+            .catch(err => console.error(err))
     }
 
+    // Init Functions
+    loadGlobalStats()
     dataLoad(baseEventURL);
-
+    
 
     source = new EventSource(streamURL);
 
     source.onopen = function(e){
-        console.log('connection made');
+        console.info('Connected for Streaming Events');
     }
 
     // Real Time Update Stream
@@ -480,16 +484,14 @@ $(document).ready(function() {
         const { summary, data } = JSON.parse(evt.data);
         updatedSum = createSummary(summary)
         summaryDiv.innerHTML = updatedSum;
-        // console.log(data)
+        daySummaryBar(summary)
         table.clear()
         table.rows.add(data)
         table.draw()
     }, false)
     
     source.onerror = function(e){
-        console.log(e)
+        console.error(e)
     }
 
 } );
-
-// #343a40

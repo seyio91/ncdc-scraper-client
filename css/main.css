@@ -149,16 +149,37 @@ ul {
     height: 100%;
 }
 
+marquee {
+    font-size: 14px;
+}
+
+#twitterimg{
+    width: 30x;
+    height: 30px;
+}
+
+#mailimg{
+    width: 30x;
+    height: 30px;   
+}
+
+
 /* responsive text queries */
 @media screen and (max-width: 992px) {
     p,.btn,input,div,span,h4 {
       font-size: 98%;
     }
-
+    #iconimgtxt {
+        display: none;
+    }
   }
   
   @media screen and (max-width: 768px) {
     p,.btn,input,div,span,h4 {
       font-size: 97%;
+    }
+
+    #iconimgtxt {
+        display: none;
     }
   }

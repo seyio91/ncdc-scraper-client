@@ -10,36 +10,34 @@
     <link rel="stylesheet" href="./css/main.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <title>Nigeria CoVid Stats</title>
+    <title>Nigeria Covid19 Statistics</title>
 </head>
 <body>
-    <header>
-        <div class="label-counter" id="page-top">Nigeria COVID-19 Statistics</div>
-    </header>
     <div class="container-fluid">
-
         <div class="row">
             <div class="col headinfo">
                 <div class="card card mx-auto shadow p-1 mb-1 rounded-lg">
                     <div class="card-body p-1">
+                        <h2 class="text-center">Nigeria COVID19 Statistics</h2>
                         <div class="row">
-                            <div class="col-8 col-md-10 small ">
-                                <p>
-                                    Disclaimer!. Information Gathered from NCDC Site. Summary and State Statistics are updated in real-time using Server Sent Events. Visit the<a href="https://covid19.ncdc.gov.ng/" target="_blank">NCDC WEBSITE</a> for more information on covid 19. Also Feel Free to leave some feedback on the twitter handle or email. 
-                                </p>
+                            <div class="col-10">
+                                <div class="col-lg-10 col-md-12 col-sm-12 mx-auto">
+                                    <p class="text-center">
+                                         Visit the <a href="https://covid19.ncdc.gov.ng/" target="_blank">NCDC WEBSITE</a> for more information on covid 19. Also Feel Free to leave some feedback on the twitter handle or email. 
+                                    </p>
+                                </div>
                             </div>
-                            <div class="col-md-2 col-4 ">
+                            <div class="col-2 float-xl-right">
                                 <div class="twitter">
-                                    <a href="https://twitter.com/intent/tweet?screen_name=seyio1187&ref_src=twsrc%5Etfw" class="twitter-mention-button" data-size="large" data-show-count="false">@seyio1187</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                                    <a href="https://twitter.com/intent/tweet?screen_name=seyio1187&ref_src=twsrc%5Etfw" target="_blank" class="btn btn-primary btn-sm"><img src="./images/Twitter_Social_Icon_Rounded_Square_Color.svg" alt="" id="twitterimg"><span class="font-weight-bold" id="iconimgtxt"> Tweet @</span></a>
                                 </div>
-                                <div class="mailto">
-                                    <a href="mailto:linuxcloudng@gmail.com" target="_blank" class="btn btn-danger btn-sm"><span class="font-weight-bold">@ Mail me</span></a>
+                                <div class="mailto pt-1">
+                                    <a href="mailto:linuxcloudng@gmail.com" target="_blank" class="btn btn-danger btn-sm"><img src="./images/mail.svg" alt="" id="mailimg"><span class="font-weight-bold" id="iconimgtxt">Send Mail</span></a>
                                 </div>
                             </div>
-
-                            <div class="col col-xl-6 offset-xl-4" id="globalstats"></div>
+                            <marquee class="mx-auto deaths font-weight-bold" width="80%" direction="left">Also Feel Free to leave some feedback on the twitter handle or email. Disclaimer!. Information Gathered from NCDC Site. Please Notify Seyi on any errors via twitter or email</marquee>
+                            <div class="col-12 col-xl-6 offset-xl-4" id="globalstats"></div>
                         </div>
-                        <marquee direction="right">Test</marquee>
                     </div>
                 </div>
             </div>
@@ -58,7 +56,7 @@
                             </div>
                         </div>
                         <div id="maincounter-wrap">
-                            <h1>Deaths:</h1>
+                            <h1>Deaths #:</h1>
                             <div class="maincounter-number" style="color:rgb(207, 30, 30) ">
                             <span>0</span>
                             </div>
@@ -116,7 +114,7 @@
                             <h1 class="card-title">Nigeria Covid19 Statistics</h1>
                         </div>
                         
-                            <div class="row">
+                            <div class="row font-weight-bold pt-1">
                                 <div class="col-sm-4 small">
                                     Total Recovery Rate:
                                     <div class="progress" id="recovery-progress">
@@ -128,6 +126,12 @@
                                         <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
                                       </div>
                                 </div>
+                                <div class="col-sm-2">Total Cases: 
+                                    <span id="progress-totalcases" style="color:rgba(0, 181, 204, 0.7)">
+                                    0
+                                    </span>
+                                </div>
+                                <div class="col-sm-2">Tests: <span id="progress-totaltest" style="color: #c2c2c2;">0</span></div>
                             </div>
                         
                         
@@ -164,9 +168,6 @@
         <script src="https://cdn.datatables.net/fixedheader/3.1.6/js/dataTables.fixedHeader.min.js"></script>
         <script src="https://cdn.datatables.net/plug-ins/1.10.20/sorting/natural.js"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-        <!-- <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
-        <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" /> -->
-        <!-- <script type="module" src="./js/helpers.js"></script> -->
-        <script src="./js/tables.js"></script>
+        <script src="./js/dashboard.js"></script>
 </body>
 </html>
