@@ -63,8 +63,10 @@ header {
 
 
 .analytics {
-    margin-top: 30px;
-    margin-bottom: 30px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    padding-left: 0;
+    padding-right: 0;
 }
 
 
@@ -115,6 +117,28 @@ tbody {
 
 .dateselect {
     padding: 5px;
+    color: white;
+    text-decoration: none;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+    background-color: rgb(153, 153, 153);
+    border-radius: 10%;
+}
+
+.dateselect:hover {
+    opacity: 0.4;
+}
+
+.mainhead a {
+    color: white;
+    font-weight: bold;
+
+}
+
+a:hover {
+    cursor: pointer;
+    text-decoration: none;
+    color: rgb(228, 228, 228);
 }
 
 .headinfo {
@@ -134,7 +158,7 @@ tbody {
 
 #timenav {
     position: absolute;
-    right: 30px;
+    right: 10px;
 }
 
 .btn-primary {
@@ -163,6 +187,11 @@ marquee {
     height: 30px;   
 }
 
+.tablebox {
+    padding-left: 0.5em !important;
+    padding-right: 0.5em !important;
+}
+
 
 /* responsive text queries */
 @media screen and (max-width: 992px) {
@@ -182,4 +211,73 @@ marquee {
     #iconimgtxt {
         display: none;
     }
+
+    h2 {
+        font-size: 22px;
+    }
+
+    h1{
+        font-size: 24px;
+    }
+
+    .block marquee {
+        width: 100%;
+    }
+
   }
+  @media screen and (max-width: 480px) {
+    .sm-hide {
+      display: none;
+    }
+
+}
+
+.testmain {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translate(-50%, -50%);
+    width: 100%;
+}
+
+.block {
+    position: relative;
+}
+
+.progress {
+    position: relative;
+}
+
+.percent {
+    position: absolute;
+    top: -2px;
+    left: 45%;
+    color: black;
+    font-weight: 700;
+}
+
+span.receiverChat {
+    content: '';
+    /* margin: 5px;demo spacing */
+    display: inline-block;
+    vertical-align: middle;
+    width: 0; 
+    height: 0; 
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-bottom: 15px solid #737373;
+  }
+
+.updates {
+    font-size: 16px;
+}
+
+.number {
+    left: 5%;
+    /* transform: translate(50%, 50%); */
+}
+
+.nopad {
+    padding-left: 0px;
+    padding-right: 0px;
+}

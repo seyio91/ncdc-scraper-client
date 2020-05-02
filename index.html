@@ -3,6 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Coronavirus, NCDC, Coronavirus (COVID-19),(COVID-19), Nigeria  " name="keywords">
+    <meta content="Nigeria Coronavirus (COVID-19) Statistics website. Providing updates on the Coronavirus Statistics in Nigeria" name="description">
+    <meta property="og:site_name" content="NG COVID19 STATS"/>
+    <meta property="og:title" content="LIVE NIGERIA COVID19 STATS UPDATE"/>
+    <meta property="og:url" content="https://ngcovid19.com.ng" />
+    <meta property="og:image" content="https://ngcovid19.com.ng/thumbnail.PNG"/>
+    <meta property="og:description" content="Gives updated stats on the CoronaVirus cases in Nigeria down to states, number of tests conducted, recovery rate, death rate."/>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.2.2/css/buttons.bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.1.2/css/fixedHeader.dataTables.min.css">
@@ -10,32 +17,41 @@
     <link rel="stylesheet" href="./css/main.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-156544577-2"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-156544577-2');
+    </script>
+    <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
     <title>Nigeria Covid19 Statistics</title>
 </head>
 <body>
+    <!--  -->
     <div class="container-fluid">
         <div class="row">
             <div class="col headinfo">
                 <div class="card card mx-auto shadow p-1 mb-1 rounded-lg">
                     <div class="card-body p-1">
-                        <h2 class="text-center">Nigeria COVID19 Statistics</h2>
-                        <div class="row">
-                            <div class="col-10">
-                                <div class="col-lg-10 col-md-12 col-sm-12 mx-auto">
-                                    <p class="text-center">
-                                         Visit the <a href="https://covid19.ncdc.gov.ng/" target="_blank">NCDC WEBSITE</a> for more information on covid 19. Also Feel Free to leave some feedback on the twitter handle or email. 
-                                    </p>
-                                </div>
+                        <div class="row block">
+                            <div class="col-12 ">
+                                <h1 class="text-center">Nigeria COVID-19 Stats</h1>
+                                <p class="text-center mainhead">
+                                    Visit the <a href="https://covid19.ncdc.gov.ng/" target="_blank">NCDC Site</a> for more info. 
+                               </p>
+                               <marquee class="mx-auto deaths font-weight-bold" width="90%" direction="left">Disclaimer!. Information compiled from the NCDC Site and values are sometimes reviewed and changed. Please Notify Seyi for any errors or feedback via twitter, email or whatsapp +26878514450. Thanks. </marquee>
                             </div>
-                            <div class="col-2 float-xl-right">
+                            <div class="col-1 float-xl-right testmain mr-2">
                                 <div class="twitter">
                                     <a href="https://twitter.com/intent/tweet?screen_name=seyio1187&ref_src=twsrc%5Etfw" target="_blank" class="btn btn-primary btn-sm"><img src="./images/Twitter_Social_Icon_Rounded_Square_Color.svg" alt="" id="twitterimg"><span class="font-weight-bold" id="iconimgtxt"> Tweet @</span></a>
                                 </div>
                                 <div class="mailto pt-1">
-                                    <a href="mailto:linuxcloudng@gmail.com" target="_blank" class="btn btn-danger btn-sm"><img src="./images/mail.svg" alt="" id="mailimg"><span class="font-weight-bold" id="iconimgtxt">Send Mail</span></a>
+                                    <a href="mailto:seyi_obaweya@yahoo.com" target="_blank" class="btn btn-danger btn-sm"><img src="./images/mail.svg" alt="" id="mailimg"><span class="font-weight-bold" id="iconimgtxt"> Mail Me</span></a>
                                 </div>
                             </div>
-                            <marquee class="mx-auto deaths font-weight-bold" width="80%" direction="left">Also Feel Free to leave some feedback on the twitter handle or email. Disclaimer!. Information Gathered from NCDC Site. Please Notify Seyi on any errors via twitter or email</marquee>
                             <div class="col-12 col-xl-6 offset-xl-4" id="globalstats"></div>
                         </div>
                     </div>
@@ -51,34 +67,50 @@
                         <div style="font-size:13px; color:#999; margin-top:5px; text-align:center">Last updated: <span id="update-time"></span> </div>
                         <div id="maincounter-wrap">
                             <h1>Coronavirus Cases:</h1>
-                            <div class="maincounter-number" >
-                            <span style="color:rgba(0, 181, 204, 0.7)">0</span>
+                            <div class="row maincounter-number" style="color:rgba(0, 181, 204, 0.7)">
+                                <div class="col number">
+                                    <span>0</span>
+                                    <span class="receiverChat" style="border-bottom: 15px solid rgba(0, 181, 204, 0.7);"></span>
+                                    <span class="updates">0</span>
+                                </div>
                             </div>
                         </div>
                         <div id="maincounter-wrap">
-                            <h1>Deaths #:</h1>
-                            <div class="maincounter-number" style="color:rgb(207, 30, 30) ">
-                            <span>0</span>
+                            <h1>Deaths:</h1>
+                            <div class="row maincounter-number" style="color:rgb(207, 30, 30) ">
+                                <div class="col number">
+                                    <span>0</span>
+                                    <span class="receiverChat" style="border-bottom: 15px solid rgb(207, 30, 30);"></span>
+                                    <span class="updates">0</span>
+                                </div>
                             </div>
                         </div>
                         <div id="maincounter-wrap">
                             <h1>Recovered:</h1>
-                            <div class="maincounter-number" style="color:#8ACA2B ">
-                            <span>0</span>
+                            <div class="row maincounter-number" style="color:#8ACA2B ">
+                                <div class="col number">
+                                    <span>0</span>
+                                    <span class="receiverChat" style="border-bottom: 15px solid #8ACA2B;"></span>
+                                    <span class="updates">0</span>
+                                </div>
                             </div>
                         </div>
                         <div id="maincounter-wrap">
                             <h1>Tests:</h1>
                             <div class="maincounter-number">
-                            <span>0</span>
+                                <div class="col number">
+                                    <span>0</span>
+                                    <span class="receiverChat"></span>
+                                    <span class="updates">0</span>
+                                </div>
                             </div>
                         </div>
-                    <div style="margin-top:50px;"></div>
-                    </div>
+                        <div style="margin-top:50px;"></div>
+                        </div>
                   </div>
 
 
-                  <div class="card mx-auto shadow p-3 mb-5 rounded-lg" id="summary-card">
+                  <div class="card mx-auto shadow mb-5 rounded-lg">
 
                     <canvas id="myChart" class="analytics" style="display: none;"></canvas>
        
@@ -101,32 +133,34 @@
                 <div class="card mx-auto shadow p-3 mb-5 rounded-lg">
                     <div id="timenav">
                         <!-- redesign -->
-                        Date: 
-                        <a href="#" id="previousDate" class="dateselect">&#8249;&#8249;&#8249;</a>
+                        <span class="font-weight-bold">Date: </span>
+                        <a href="#" id="previousDate" class="dateselect">&#8249;&#8249;&#8249;<span class="sm-hide"> Prev</span></a>
                         <input type="text" id="datepicker" readonly="readonly" class="rounded input-sm" style="width: 100px;">
-                        <a href="#" id="nextDate" class="dateselect">&#8250;&#8250;&#8250;</a>
+                        <a href="#" id="nextDate" class="dateselect"><span class="sm-hide">Next </span> &#8250;&#8250;&#8250;</a>
                         <a href="#" class="rounded btn btn-primary btn-sm" id="searchDate">Go</a>
                     </div>
 
 
-                    <div class="card-body">
+                    <div class="card-body tablebox">
                         <div class="main-title">
-                            <h1 class="card-title">Nigeria Covid19 Statistics</h1>
+                            <h1 class="card-title">Statistics By State</h1>
                         </div>
                         
-                            <div class="row font-weight-bold pt-1">
-                                <div class="col-sm-4 small">
+                            <div class="row font-weight-bold pt-1 pb-2">
+                                <div class="col-sm-4 small font-weight-bold pt-1">
                                     Total Recovery Rate:
                                     <div class="progress" id="recovery-progress">
+                                        <span class="percent">0 %</span>
                                         <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
                                       </div>
                                 </div>
-                                <div class="col-sm-4 small">Total Fatality:
+                                <div class="col-sm-4 small font-weight-bold pt-1">Total Fatality:
                                     <div class="progress" id="fatality-rate">
+                                        <span class="percent">0 %</span>
                                         <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
                                       </div>
                                 </div>
-                                <div class="col-sm-2">Total Cases: 
+                                <div class="col-sm-2 pt-1">Total Cases: 
                                     <span id="progress-totalcases" style="color:rgba(0, 181, 204, 0.7)">
                                     0
                                     </span>
@@ -135,7 +169,6 @@
                             </div>
                         
                         
-                            <div class="card-body">
                                 <table id="stat-table" class="table table-dark table-hover">
                                     <thead>
                                         <tr>
@@ -146,12 +179,11 @@
                                             <th>Closed %</th>
                                             <th>Deaths</th>
                                             <th>New Deaths %</th>
-                                            <th>Active %</th>
+                                            <th>Active</th>
                                             <th>change %</th>
                                         </tr>
                                     </thead>
-                                </table>
-                            </div>                            
+                                </table>                          
                     </div>
                 </div>
             </div>

@@ -1,8 +1,8 @@
 const baseDate = '2020-02-29'
-const  baseEventURL = '/api/user/v1/events';
-const graphURL = '/api/user/v1/timeline';
-const streamURL = '/api/user/v1/stream';
-const summaryURL = '/api/user/v1/summary';
+const  baseEventURL = 'http://localhost:3000/api/user/v1/events';
+const graphURL = 'http://localhost:3000/api/user/v1/timeline';
+const streamURL = 'http://localhost:3000/api/user/v1/stream';
+const summaryURL = 'http://localhost:3000/api/user/v1/summary';
 const globalStatURL = "https://api.thevirustracker.com/free-api?global=stats"
 
 const currentDate = moment().format('YYYY-MM-DD');
@@ -14,38 +14,55 @@ const dateParser = (string) => {
 const createProgressBar = (change, orig, style) => {
     let percentage = Math.round(change*100/orig);
     return `
-    <div class="progress-bar ${style}" role="progressbar" style="width: ${percentage}%;" aria-valuenow="${percentage}" aria-valuemin="0" aria-valuemax="100">${percentage}%</div>`
+    <span class="percent">${percentage} %</span>
+    <div class="progress-bar ${style}" role="progressbar" style="width: ${percentage}%;" aria-valuenow="${percentage}" aria-valuemin="0" aria-valuemax="100"></div>`
 }
 
 const createSummary= (data) => {
     let parsedDate = dateParser(data.date)
    let summary =  `
-    <div class="card-body">
-    <div style="font-size:13px; color:#999; margin-top:5px; text-align:center">Last updated: <span id="update-time">${parsedDate}</span> </div>
-    <div id="maincounter-wrap">
-        <h1>Coronavirus Cases:</h1>
-        <div class="maincounter-number" >
-        <span style="color:rgba(0, 181, 204, 0.7)">${data.totalcases} </span>
-        </div>
-    </div>
-    <div id="maincounter-wrap">
-        <h1>Deaths:</h1>
-        <div class="maincounter-number" style="color:rgb(207, 30, 30) ">
-        <span >${data.deaths}</span>
-        </div>
-    </div>
-    <div id="maincounter-wrap">
-        <h1>Recovered:</h1>
-        <div class="maincounter-number" style="color:#8ACA2B ">
-        <span>${data.discharged}</span>
-        </div>
-    </div>
-    <div id="maincounter-wrap">
-        <h1>Tests:</h1>
-        <div class="maincounter-number" style="color:#8ACA2B ">
-        <span style="color:#aaa">${data.test}</span>
-        </div>
-    </div>
+   <div class="card-body">
+   <div style="font-size:13px; color:#999; margin-top:5px; text-align:center">Last updated: <span id="update-time">${parsedDate}</span> </div>
+   <div id="maincounter-wrap">
+       <h1>Coronavirus Cases:</h1>
+       <div class="row maincounter-number" style="color:rgba(0, 181, 204, 0.7)">
+           <div class="col number">
+               <span>${data.totalcases}</span>
+               <span class="receiverChat" style="border-bottom: 15px solid rgba(0, 181, 204, 0.7);"></span>
+               <span class="updates">${data.changetotal}</span>
+           </div>
+       </div>
+   </div>
+   <div id="maincounter-wrap">
+       <h1>Deaths:</h1>
+       <div class="row maincounter-number" style="color:rgb(207, 30, 30) ">
+           <div class="col number">
+               <span>${data.deaths}</span>
+               <span class="receiverChat" style="border-bottom: 15px solid rgb(207, 30, 30);"></span>
+               <span class="updates">${data.changedeaths}</span>
+           </div>
+       </div>
+   </div>
+   <div id="maincounter-wrap">
+       <h1>Recovered:</h1>
+       <div class="row maincounter-number" style="color:#8ACA2B ">
+           <div class="col number">
+               <span>${data.discharged}</span>
+               <span class="receiverChat" style="border-bottom: 15px solid #8ACA2B;"></span>
+               <span class="updates">${data.changedischarged}</span>
+           </div>
+       </div>
+   </div>
+   <div id="maincounter-wrap">
+       <h1>Tests:</h1>
+       <div class="maincounter-number">
+           <div class="col">
+               <span>${data.test}</span>
+           </div>
+       </div>
+   </div>
+   <div style="margin-top:50px;"></div>
+   </div>
     `
     return summary
 }
@@ -61,17 +78,17 @@ const outcomeDataLabel = ( recovered, dead) => {
 const globalRender = (total, resolved, deaths) => {
     html = `
             <div class="row pt-1 font-weight-bold">
-                <div class="col">
+                <div class="col-3">
                     Global Report:
                 </div>
-                <div class="col">
+                <div class="col-3 nopad">
                     Confirmed: <span style="color:rgba(0, 181, 204, 0.7);">${total}</span>
                 </div>
-                <div class="col">
-                    Deaths: <span class="deaths">${resolved}</span>
+                <div class="col-3 nopad">
+                    Deaths #: <span class="deaths">${deaths}</span>
                 </div>
-                <div class="col">
-                    Recovered: <span class="recovery">${deaths}</span>
+                <div class="col-3 nopad">
+                    Recovered: <span class="recovery">${resolved}</span>
                 </div>
             </div>
         `
@@ -110,7 +127,7 @@ const arrayGenerator = (largeArr) => {
             dataSet1.push(dict.totalcases);
             dataSet2.push(dict.discharged);
             dataSet3.push(dict.deaths);
-            dataSet4.push(moment(dict.date).format('YYYY-MM-DD'))
+            dataSet4.push(moment(dict.date).format('MMM-DD'))
         }
     })
 
@@ -151,8 +168,9 @@ $(document).ready(function() {
     .then(res => res.json())
         .then(response => {
             if (response.status == 'success'){
+                console.log(response.data)
 
-                let { activecases, discharged, totalcases, deaths } = response.data;
+                let { activecases, discharged, deaths } = response.data;
                 let content = createSummary(response.data);
 
                 summaryDiv.innerHTML = content;
@@ -174,6 +192,7 @@ $(document).ready(function() {
         fetch(globalStatURL)
         .then(res => res.json())
             .then(response => {
+                // console.log(response)
                 if (response.stat != 'ok') return;
                 const { total_cases, total_recovered, total_deaths } = response.results[0];
                 globalDiv.innerHTML = globalRender(total_cases, total_recovered, total_deaths)
@@ -293,20 +312,22 @@ $(document).ready(function() {
               type: 'line',
               data: {
                   labels: data4.reverse(),
-                //   labels: ['world'],
                   datasets: [{ 
                       data: data1.reverse(),
-                      label: "Total Cases",
+                      label: "Total",
+                      fontSize: 11,
                       borderColor: 'rgba(0, 181, 204, 0.7)',
                       fill: true
                   }, { 
                       data: data2.reverse(),
                       label: "Recovery",
+                      fontSize: 11,
                       borderColor: 'rgba(123, 239, 178, 0.7)',
                       fill: true
                   }, { 
                       data: data3.reverse(),
                       label: "Deaths",
+                      fontSize: 11,
                       borderColor: 'rgba(255, 99, 132, 0.7)',
                       fill: true
                   }
@@ -331,11 +352,13 @@ $(document).ready(function() {
                     xAxes: [{ 
                         ticks: {
                           fontColor: "#FFFFFF",
+                          fontSize: 11
                         },
                     }],
                     yAxes: [{
                         ticks: {
                             fontColor: "#FFFFFF",
+                            fontSize: 11
                           },
                     }],
                 }
