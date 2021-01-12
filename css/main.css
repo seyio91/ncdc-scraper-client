@@ -192,6 +192,10 @@ marquee {
     padding-right: 0.5em !important;
 }
 
+#iconimgtxt {
+    font-size: 12px;
+}
+
 
 /* responsive text queries */
 @media screen and (max-width: 992px) {
@@ -280,4 +284,9 @@ span.receiverChat {
 .nopad {
     padding-left: 0px;
     padding-right: 0px;
+}
+
+.rdp {
+    padding-left: 0.09rem;
+    padding-right: 0.09rem;
 }
